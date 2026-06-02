@@ -1,0 +1,10 @@
+# Git ignore
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.idea/
+.vscode/
+output/
+assets/cache/
+config.json
