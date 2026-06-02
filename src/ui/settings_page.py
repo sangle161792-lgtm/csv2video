@@ -232,7 +232,7 @@ class SettingsPage(QWidget):
 
         # Top N
         self._topn_spin = QSpinBox()
-        self._topn_spin.setRange(3, 20)
+        self._topn_spin.setRange(3, 30)
         self._topn_spin.setSuffix("  entries visible")
         self._topn_spin.valueChanged.connect(self._update_duration_label)
         form.addRow(self._make_lbl("Show Top"), self._topn_spin)

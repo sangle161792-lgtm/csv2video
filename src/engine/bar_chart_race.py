@@ -297,17 +297,18 @@ class BarChartRaceRenderer:
         max_val = max(v for _, v in sorted_items) or 1.0
 
         # ── Layout (avatar column always present only if self.show_logos is True) ───────────────────
+        # We increase spacing and shift the logo and name limits rightwards to prevent long names (e.g. Manchester United, Wolverhampton Wanderers) from overlapping #1, #2 rank text
         RANK_X = 0.005
         if self.show_logos:
-            LOGO_X = 0.072   # avatar always shown (logo OR letter badge)
-            NAME_R = 0.230
-            BAR_L  = 0.240
-            BAR_W  = 0.660
+            LOGO_X = 0.092   # Shifted right (from 0.072) to protect rank column
+            NAME_R = 0.250   # Shifted right (from 0.230) to expand width
+            BAR_L  = 0.260   # Shifted right (from 0.240)
+            BAR_W  = 0.640   # Adjusted slightly to fit the layout perfectly
         else:
             LOGO_X = None
-            NAME_R = 0.082   # Shift entity name left since no logo
-            BAR_L  = 0.092   # Shift bar left to reclaim the space!
-            BAR_W  = 0.810   # Expand bar width for a wider view!
+            NAME_R = 0.102   # Shifted right (from 0.082) to protect rank column
+            BAR_L  = 0.112   # Shifted right (from 0.092)
+            BAR_W  = 0.790   # Expanded beautifully
             
         BAR_H  = 0.70
 
@@ -403,18 +404,32 @@ class BarChartRaceRenderer:
     # ------------------------------------------------------------------
 
     def estimate_frame_count(self) -> int:
-        n = len(self.df)
+        n = len(self.df) + 1  # Add 1 for Round 0
         tf = max(1, int(self.fps * self.sps))
         return int(self.fps * 0.8) + (n - 1) * tf + int(self.fps * 1.2)
 
     def iter_frames(self) -> Iterator[Tuple[np.ndarray, int, str]]:
         """Yield (bgr_frame, progress_pct, status_msg) one at a time."""
         rows = []
+        
+        # ── Prepend 'Round 0' / 'Vòng 0' where all entities have 0 points ──
+        round_0_label = "0"
+        # Try to infer format of first column (if numeric, use 0. If string, "0")
+        try:
+            first_val = self.df.iloc[0, 0]
+            if isinstance(first_val, (int, float, np.integer, np.floating)):
+                round_0_label = type(first_val)(0)
+        except Exception:
+            pass
+            
+        round_0_vals = {e: 0.0 for e in self.entities}
+        rows.append((round_0_label, round_0_vals))
+        
         for _, row in self.df.iterrows():
             vals = {e: float(row.get(e, 0)) for e in self.entities}
             rows.append((row[self.time_col], vals))
 
-        if not rows:
+        if len(rows) <= 1:
             return
 
         tf         = max(1, int(self.fps * self.sps))
