@@ -360,9 +360,11 @@ class BarChartRaceRenderer:
 
         # ── Premium Stacked Header (Strictly Centered & Safe from Mobile Overlap) ──
         # Small Category subtitle - elegant light blue/indigo uppercase
-        fig.text(0.50, 0.88, self.title.upper(),
+        # We manually space out the characters (e.g. 'A B C') to achieve the premium tracked look, since Matplotlib Text doesn't support 'letter_spacing'
+        spaced_title = "  ".join(list(self.title.upper()))
+        fig.text(0.50, 0.88, spaced_title,
                  ha="center", va="center",
-                 color="#60A5FA", fontsize=11, fontweight="bold", letter_spacing=2)
+                 color="#60A5FA", fontsize=10, fontweight="bold")
 
         # Big bold title: "Thứ hạng qua từng vòng"
         fig.text(0.50, 0.81, "Thứ hạng qua từng vòng",
