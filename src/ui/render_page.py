@@ -163,11 +163,18 @@ class RenderPage(QWidget):
         btn_row = QHBoxLayout()
         btn_row.setSpacing(12)
 
-        self._render_btn = QPushButton("🚀   Render Video")
+        self._render_btn = QPushButton("🚀   Render Current Style")
         self._render_btn.setObjectName("render_btn")
         self._render_btn.setMinimumHeight(58)
         self._render_btn.clicked.connect(self._start_render)
         btn_row.addWidget(self._render_btn)
+
+        self._batch_btn = QPushButton("🎬   Batch Render (All 4 Styles)")
+        self._batch_btn.setObjectName("render_btn") # Green/indigo gradients styling
+        self._batch_btn.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #10B981, stop:1 #3B82F6);")
+        self._batch_btn.setMinimumHeight(58)
+        self._batch_btn.clicked.connect(self._start_batch_render)
+        btn_row.addWidget(self._batch_btn)
 
         self._abort_btn = QPushButton("🛑  Abort")
         self._abort_btn.setObjectName("action_btn_secondary")
@@ -254,6 +261,7 @@ class RenderPage(QWidget):
                 "⚠️  No data loaded. Go to <b>Import Data</b> first."
             )
             self._render_btn.setEnabled(False)
+            self._batch_btn.setEnabled(False)
             return
 
         cfg  = state.config
@@ -278,18 +286,20 @@ class RenderPage(QWidget):
             f"<b>Top N:</b> {top_n}"
         )
         self._render_btn.setEnabled(True)
+        self._batch_btn.setEnabled(True)
 
     # ------------------------------------------------------------------
     # Render control
     # ------------------------------------------------------------------
 
-    def _output_path(self) -> str:
+    def _output_path(self, style_suffix: str = "") -> str:
         os.makedirs("output", exist_ok=True)
         ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         title = self.state.config.get("title", "render").replace(" ", "_")
         # Sanitise
-        safe = "".join(c if c.isalnum() or c in "_-" else "" for c in title)[:40]
-        return os.path.abspath(os.path.join("output", f"{safe}_{ts}.mp4"))
+        safe = "".join(c if c.isalnum() or c in "_-" else "" for c in title)[:30]
+        suffix = f"_{style_suffix.replace(' ', '_')}" if style_suffix else ""
+        return os.path.abspath(os.path.join("output", f"{safe}{suffix}_{ts}.mp4"))
 
     def _start_render(self):
         if not self.state.has_data():
@@ -304,6 +314,7 @@ class RenderPage(QWidget):
         self._result_card.setVisible(False)
         self._progress_bar.setValue(0)
         self._render_btn.setEnabled(False)
+        self._batch_btn.setEnabled(False)
         self._abort_btn.setEnabled(True)
         self._start_time = time.time()
 
@@ -323,7 +334,92 @@ class RenderPage(QWidget):
         self._thread.failed.connect(self._on_failed)
         self._thread.start()
 
+    def _start_batch_render(self):
+        """Runs the queue to sequentially render all 4 visual styles in background."""
+        if not self.state.has_data():
+            return
+
+        # Save settings before render
+        settings_page = self.mw._pages.get("settings")
+        if settings_page and hasattr(settings_page, "_save"):
+            settings_page._save()
+
+        self._log.clear()
+        self._result_card.setVisible(False)
+        self._progress_bar.setValue(0)
+        self._render_btn.setEnabled(False)
+        self._batch_btn.setEnabled(False)
+        self._abort_btn.setEnabled(True)
+        self._start_time = time.time()
+        
+        self._batch_queue = ["Subtle 3D", "Classic 2D", "Retro Neon", "Glassmorphism"]
+        self._batch_outputs = []
+        self._log_line("🚀   Batch Render Queue started! Preparing all 4 styles...")
+        self._log_line("─" * 50)
+        self._run_next_batch_item()
+
+    def _run_next_batch_item(self):
+        if not hasattr(self, "_batch_queue") or not self._batch_queue:
+            # Batch render completed!
+            self._on_batch_complete()
+            return
+
+        style = self._batch_queue.pop(0)
+        self._log_line(f"\n🎬   [Queue] Rendering style: {style}...")
+        
+        # Configure temporary config for this style
+        cfg = dict(self.state.config)
+        cfg["chart_style"] = style
+        out = self._output_path(style)
+        
+        self._thread = RenderThread(
+            dataframe   = self.state.dataframe.copy(),
+            config      = cfg,
+            output_path = out,
+        )
+        
+        # Intermediate callbacks
+        self._thread.progress.connect(self._on_progress)
+        self._thread.status.connect(self._on_status)
+        self._thread.failed.connect(self._on_failed)
+        
+        # Connect finish to trigger next item
+        def _on_item_finished(path: str):
+            self._batch_outputs.append(path)
+            self._log_line(f"✅   Finished style: {style} -> {os.path.basename(path)}")
+            # Clean up current thread ref
+            self._thread.disconnect()
+            self._thread = None
+            self._run_next_batch_item()
+
+        self._thread.finished.connect(_on_item_finished)
+        self._thread.start()
+
+    def _on_batch_complete(self):
+        elapsed = time.time() - self._start_time
+        self._abort_btn.setEnabled(False)
+        self._render_btn.setEnabled(True)
+        self._batch_btn.setEnabled(True)
+        self._progress_bar.setValue(100)
+
+        self._result_card.setVisible(True)
+        self.state.output_path = self._batch_outputs[-1] if self._batch_outputs else None
+        for path in self._batch_outputs:
+            self.state.recent_outputs.append(path)
+
+        styles_rendered_html = "<br>".join([f"· <tt>{os.path.basename(p)}</tt>" for p in self._batch_outputs])
+        self._result_lbl.setText(
+            f"✅  <b>Batch Render complete!</b><br>"
+            f"Rendered all 4 styles in {elapsed:.1f}s!<br>"
+            f"Files generated:<br>{styles_rendered_html}"
+        )
+        self._status_lbl.setText("✅  All 4 styles rendered successfully!")
+        self._log_line("─" * 50)
+        self._log_line(f"🎉   All 4 styles complete! Total time: {elapsed:.1f}s.")
+
     def _abort(self):
+        if hasattr(self, "_batch_queue"):
+            self._batch_queue.clear()
         if self._thread and self._thread.isRunning():
             self._thread.abort()
             self._log_line("Abort requested…")
