@@ -335,7 +335,7 @@ class RenderPage(QWidget):
         self._thread.start()
 
     def _start_batch_render(self):
-        """Runs the queue to sequentially render all 4 visual styles in background."""
+        """Runs all 4 visual style rendering tasks concurrently (PARALLEL) in background threads."""
         if not self.state.has_data():
             return
 
@@ -352,50 +352,57 @@ class RenderPage(QWidget):
         self._abort_btn.setEnabled(True)
         self._start_time = time.time()
         
-        self._batch_queue = ["Subtle 3D", "Classic 2D", "Retro Neon", "Glassmorphism"]
+        self._parallel_threads = []
         self._batch_outputs = []
-        self._log_line("🚀   Batch Render Queue started! Preparing all 4 styles...")
+        self._parallel_progress = {}  # Thread -> pct
+        
+        styles = ["Subtle 3D", "Classic 2D", "Retro Neon", "Glassmorphism"]
+        self._log_line(f"🚀   Starting Parallel Batch Render! Spinning up {len(styles)} threads concurrently...")
         self._log_line("─" * 50)
-        self._run_next_batch_item()
-
-    def _run_next_batch_item(self):
-        if not hasattr(self, "_batch_queue") or not self._batch_queue:
-            # Batch render completed!
-            self._on_batch_complete()
-            return
-
-        style = self._batch_queue.pop(0)
-        self._log_line(f"\n🎬   [Queue] Rendering style: {style}...")
         
-        # Configure temporary config for this style
-        cfg = dict(self.state.config)
-        cfg["chart_style"] = style
-        out = self._output_path(style)
-        
-        self._thread = RenderThread(
-            dataframe   = self.state.dataframe.copy(),
-            config      = cfg,
-            output_path = out,
-        )
-        
-        # Intermediate callbacks
-        self._thread.progress.connect(self._on_progress)
-        self._thread.status.connect(self._on_status)
-        self._thread.failed.connect(self._on_failed)
-        
-        # Connect finish to trigger next item
-        def _on_item_finished(path: str):
-            self._batch_outputs.append(path)
-            self._log_line(f"✅   Finished style: {style} -> {os.path.basename(path)}")
-            # Clean up current thread ref
-            self._thread.disconnect()
-            self._thread = None
-            self._run_next_batch_item()
+        for style in styles:
+            cfg = dict(self.state.config)
+            cfg["chart_style"] = style
+            out = self._output_path(style)
+            
+            # Instantiating unique thread
+            t = RenderThread(
+                dataframe   = self.state.dataframe.copy(),
+                config      = cfg,
+                output_path = out,
+            )
+            
+            self._parallel_progress[t] = 0
+            self._parallel_threads.append(t)
+            
+            # Setup specific signals safely using inline lambdas or closures
+            t.progress.connect(lambda pct, thread=t: self._on_parallel_progress(thread, pct))
+            t.status.connect(lambda msg, s=style: self._log_line(f"🌀  [{s}] {msg}"))
+            t.failed.connect(lambda tb, s=style: self._log_line(f"❌  [{s}] FAILED: {tb[:100]}..."))
+            
+            # Connect finished handler
+            t.finished.connect(lambda path, thread=t, s=style: self._on_parallel_item_finished(thread, s, path))
+            
+            # Start QThread immediately
+            t.start()
 
-        self._thread.finished.connect(_on_item_finished)
-        self._thread.start()
+    def _on_parallel_progress(self, thread, pct: int):
+        self._parallel_progress[thread] = pct
+        # Calculate aggregate average progress across all active threads
+        if self._parallel_progress:
+            avg = sum(self._parallel_progress.values()) // len(self._parallel_progress)
+            self._progress_bar.setValue(avg)
 
-    def _on_batch_complete(self):
+    def _on_parallel_item_finished(self, thread, style: str, path: str):
+        self._batch_outputs.append(path)
+        self._log_line(f"✅   [Parallel Complete] Style '{style}' finished -> {os.path.basename(path)}")
+        
+        # Check if all parallel threads are finished
+        all_done = all(not t.isRunning() for t in self._parallel_threads)
+        if all_done:
+            self._on_parallel_batch_complete()
+
+    def _on_parallel_batch_complete(self):
         elapsed = time.time() - self._start_time
         self._abort_btn.setEnabled(False)
         self._render_btn.setEnabled(True)
@@ -409,17 +416,27 @@ class RenderPage(QWidget):
 
         styles_rendered_html = "<br>".join([f"· <tt>{os.path.basename(p)}</tt>" for p in self._batch_outputs])
         self._result_lbl.setText(
-            f"✅  <b>Batch Render complete!</b><br>"
-            f"Rendered all 4 styles in {elapsed:.1f}s!<br>"
+            f"✅  <b>Parallel Batch Render complete!</b><br>"
+            f"Rendered all 4 styles in parallel in {elapsed:.1f}s!<br>"
             f"Files generated:<br>{styles_rendered_html}"
         )
-        self._status_lbl.setText("✅  All 4 styles rendered successfully!")
+        self._status_lbl.setText("✅  All 4 styles rendered in parallel successfully!")
         self._log_line("─" * 50)
-        self._log_line(f"🎉   All 4 styles complete! Total time: {elapsed:.1f}s.")
+        self._log_line(f"🎉   All 4 parallel threads finished! Total time: {elapsed:.1f}s.")
+        
+        # Clean thread pool references
+        self._parallel_threads.clear()
+        self._parallel_progress.clear()
 
     def _abort(self):
-        if hasattr(self, "_batch_queue"):
-            self._batch_queue.clear()
+        # Abort all parallel threads if running
+        if hasattr(self, "_parallel_threads"):
+            for t in self._parallel_threads:
+                if t.isRunning():
+                    t.abort()
+            self._parallel_threads.clear()
+            self._parallel_progress.clear()
+            
         if self._thread and self._thread.isRunning():
             self._thread.abort()
             self._log_line("Abort requested…")
