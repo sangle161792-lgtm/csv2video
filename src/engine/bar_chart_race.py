@@ -260,8 +260,10 @@ class BarChartRaceRenderer:
         )
         fig.patch.set_facecolor(self.bg_color)
 
-        # Chart area: leave 9 % at top (title) and 8 % at bottom (footer)
-        ax = fig.add_axes([0.0, 0.08, 1.0, 0.83])
+        # ── Mobile & TikTok/Shorts Safe Zone Margin Setup ───────────────────
+        # Left/Right safe margins: we compress the active chart horizontally (0.10 to 0.90)
+        # Top/Bottom safe margins: we reserve 0.22 at the top (for title) and 0.15 at the bottom (for descriptions/buttons)
+        ax = fig.add_axes([0.10, 0.15, 0.80, 0.63])
         ax.set_facecolor(self.bg_color)
         ax.tick_params(left=False, bottom=False,
                        labelleft=False, labelbottom=False)
@@ -269,25 +271,15 @@ class BarChartRaceRenderer:
             sp.set_visible(False)
 
         # ── Interpolate Rank Positions for Smooth Vertical Movement ──
-        # To make vertical transitions silky smooth, we compute the target y-position
-        # of each entity based on its continuous interpolated rank, instead of using
-        # its discrete sorted rank.
-        
-        # Sort ALL entities by value to find continuous ranks
         all_sorted = sorted(
             [(e, float(values.get(e, 0))) for e in self.entities],
             key=lambda x: x[1], reverse=True
         )
         
-        # Build a mapping of entity to its precise floating rank
-        # We can interpolate ranks when values are close, but a simple fractional rank is perfect:
-        # Just use the index in the sorted list.
         entity_target_y = {}
         for rank_idx, (entity, val) in enumerate(all_sorted):
-            # Target y in our coordinate space: (n - 1 - rank)
             entity_target_y[entity] = self.top_n - 1 - rank_idx
 
-        # Only draw the top N items that are actually visible (or recently visible)
         sorted_items = all_sorted[: self.top_n]
         n = len(sorted_items)
         if n == 0:
@@ -296,94 +288,102 @@ class BarChartRaceRenderer:
 
         max_val = max(v for _, v in sorted_items) or 1.0
 
-        # ── Layout (avatar column always present only if self.show_logos is True) ───────────────────
-        # We increase spacing and shift the logo and name limits rightwards to prevent long names (e.g. Manchester United, Wolverhampton Wanderers) from overlapping #1, #2 rank text
-        RANK_X = 0.005
+        # ── Premium Safe-Zone Coordinates ──
+        # Since ax takes [0.10, 0.10] to [0.90, 0.78] in figure coordinates,
+        # our internal ax X-limits (0.0 to 1.0) map beautifully with safe spaces.
+        RANK_X = 0.015    # Kept left
+        
         if self.show_logos:
-            LOGO_X = 0.092   # Shifted right (from 0.072) to protect rank column
-            NAME_R = 0.250   # Shifted right (from 0.230) to expand width
-            BAR_L  = 0.260   # Shifted right (from 0.240)
-            BAR_W  = 0.640   # Adjusted slightly to fit the layout perfectly
+            # We align entities exactly like the reference image:
+            # #1  Name                      Value
+            # |█████████████████████████████████|
+            LOGO_X = 0.080
+            NAME_L = 0.082   # Left-aligned entity name, starting right after rank/logo
+            BAR_L  = 0.015   # Bar starts at left safe zone
+            BAR_W  = 0.970   # Bar stretches all the way to the right safe zone!
         else:
             LOGO_X = None
-            NAME_R = 0.102   # Shifted right (from 0.082) to protect rank column
-            BAR_L  = 0.112   # Shifted right (from 0.092)
-            BAR_W  = 0.790   # Expanded beautifully
-            
-        BAR_H  = 0.70
+            NAME_L = 0.015   # Left-aligned entity name right at the start
+            BAR_L  = 0.015
+            BAR_W  = 0.970
 
+        BAR_H  = 0.35        # Thinner sleek bars (like the image)
+
+        # Matplotlib premium typography settings matching the reference image
+        font_config = {"fontname": "Segoe UI", "fontweight": "bold"}
+        
         # Adaptive font sizes
         nf       = max(n, 3)
-        rank_fs  = max(9, min(16, int(150 / nf)))    # smaller rank numbers
-        name_fs  = max(8, min(15, int(140 / nf)))
-        val_fs   = max(7, min(13, int(118 / nf)))
+        rank_fs  = max(11, min(15, int(150 / nf)))
+        name_fs  = max(13, min(21, int(185 / nf)))
+        val_fs   = max(13, min(21, int(185 / nf)))
 
         for rank, (entity, val) in enumerate(sorted_items):
-            # Smoothly transition y coordinate based on the continuous rank layout
             y     = entity_target_y[entity]
             color = self.entity_colors.get(entity, "#7C7CFF")
             bw    = (val / max_val) * BAR_W if max_val > 0 else 0.0
 
-            # Styled bar matching template choice
-            self._draw_styled_bar(ax, BAR_L, y, bw, BAR_H, color)
+            # 1. Background Bar (Sleek dark track behind the active bar, like the image)
+            ax.add_patch(Rectangle((BAR_L, y - 0.22), BAR_W, 0.24,
+                                    facecolor="#1A1F2C", alpha=0.85,
+                                    linewidth=0, zorder=1))
 
-            # Rank number — large and prominent
-            ax.text(RANK_X, y, f"#{rank + 1}",
+            # 2. Styled Active Bar (Placed slightly lower than text for a stacked look, like the image)
+            self._draw_styled_bar(ax, BAR_L, y - 0.22, bw, 0.24, color)
+
+            # 3. Rank number (#1, #2...) - muted slate gray, elegant
+            ax.text(RANK_X, y + 0.14, f"#{rank + 1}",
                     ha="left", va="center",
-                    color="#94A3B8", fontsize=rank_fs, fontweight="bold",
-                    zorder=6)
+                    color="#475569", fontsize=rank_fs, zorder=6, **font_config)
 
-            # Avatar: logo image if available, else letter badge (Only draw if show_logos is True)
+            # 4. Avatar (Only drawn if show_logos is True)
             if self.show_logos:
                 logo_img = self._logo_cache.get(entity)
                 if logo_img is not None:
-                    self._draw_logo(ax, logo_img, LOGO_X, y)
+                    self._draw_logo(ax, logo_img, LOGO_X, y + 0.14)
                 else:
-                    self._draw_avatar_fallback(ax, entity, color, LOGO_X, y, name_fs)
+                    self._draw_avatar_fallback(ax, entity, color, LOGO_X, y + 0.14, name_fs)
 
-            # Entity name
-            ax.text(NAME_R, y, entity,
-                    ha="right", va="center",
-                    color="#E2E8F0", fontsize=name_fs, fontweight="bold",
-                    zorder=6)
-
-            # Value
-            val_str = f"{val:,.0f}" if val >= 1 else f"{val:.2f}"
-            ax.text(BAR_L + bw + 0.009, y, val_str,
+            # 5. Entity name - left-aligned, bright white, elegant
+            ax.text(NAME_L + (0.05 if self.show_logos else 0.0), y + 0.14, entity,
                     ha="left", va="center",
-                    color="#94A3B8", fontsize=val_fs, zorder=6)
+                    color="#FFFFFF", fontsize=name_fs, zorder=6, **font_config)
+
+            # 6. Value - right-aligned at the end of the bar grid, bold
+            val_str = f"{val:,.0f}" if val >= 1 else f"{val:.2f}"
+            ax.text(BAR_L + BAR_W - 0.015, y + 0.14, val_str,
+                    ha="right", va="center",
+                    color="#FFFFFF", fontsize=val_fs, zorder=6, **font_config)
 
         ax.set_xlim(0.0, 1.0)
         ax.set_ylim(-0.75, self.top_n - 0.25)
 
-        # ── Title ──────────────────────────────────────────────────
-        fig.text(0.50, 0.977, self.title,
-                 ha="center", va="top",
-                 color="#FFFFFF", fontsize=20, fontweight="bold")
+        # ── Premium Stacked Header (Strictly Centered & Safe from Mobile Overlap) ──
+        # Small Category subtitle - elegant light blue/indigo uppercase
+        fig.text(0.50, 0.88, self.title.upper(),
+                 ha="center", va="center",
+                 color="#60A5FA", fontsize=11, fontweight="bold", letter_spacing=2)
 
-        # Divider under title
-        fig.add_artist(plt.Line2D(
-            [0.04, 0.96], [0.932, 0.932],
-            transform=fig.transFigure,
-            color="#2D2D42", linewidth=0.8,
-        ))
+        # Big bold title: "Thứ hạng qua từng vòng"
+        fig.text(0.50, 0.81, "Thứ hạng qua từng vòng",
+                 ha="center", va="center",
+                 color="#FFFFFF", fontsize=27, fontweight="black")
 
-        # ── Time label (large, bottom-right) ───────────────────────
-        fig.text(0.96, 0.012, str(time_label),
-                 ha="right", va="bottom",
-                 color="#7C3AED", fontsize=54, fontweight="bold", alpha=0.95)
+        # Bottom dynamic subtitle: "Bảng xếp hạng sau vòng X"
+        fig.text(0.50, 0.74, f"Bảng xếp hạng sau vòng {time_label}",
+                 ha="center", va="center",
+                 color="#94A3B8", fontsize=13, fontweight="medium")
 
-        # ── Unit label (bottom-left, replaces old watermark spot) ──
+        # ── Watermark & Unit label (bottom safe zone) ───────────────────────
         if self.unit_label:
-            fig.text(0.03, 0.018, f"● {self.unit_label}",
-                     ha="left", va="bottom",
-                     color="#64748B", fontsize=11)
+            fig.text(0.50, 0.07, f"● {self.unit_label}",
+                     ha="center", va="center",
+                     color="#64748B", fontsize=11, fontweight="semibold")
 
-        # ── Watermark (very subtle, bottom-right above time label) ──
         if self.watermark:
-            fig.text(0.96, 0.065, self.watermark,
-                     ha="right", va="bottom",
-                     color="#1E1E2E", fontsize=8)
+            fig.text(0.50, 0.03, self.watermark,
+                     ha="center", va="center",
+                     color="#334155", fontsize=9, fontweight="bold")
 
         # ── Convert to BGR numpy array ──────────────────────────────
         fig.canvas.draw()
