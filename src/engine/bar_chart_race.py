@@ -17,7 +17,7 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, FancyBboxPatch
 import numpy as np
 import pandas as pd
 import colorsys
@@ -157,54 +157,63 @@ class BarChartRaceRenderer:
         style = self.chart_style
 
         if style == "Classic 2D":
-            # Flat solid bar with nice thin border
-            ax.add_patch(Rectangle((x, y - h / 2), w, h,
-                                    facecolor=color, alpha=0.95,
-                                    edgecolor="white", linewidth=0.5, zorder=2))
+            # Flat solid bar with nice thin border and rounded corners
+            ax.add_patch(FancyBboxPatch((x, y - h / 2), w, h,
+                                         boxstyle="round,pad=0,rounding_size=0.015",
+                                         facecolor=color, alpha=0.95,
+                                         edgecolor="white", linewidth=0.5, zorder=2))
 
         elif style == "Retro Neon":
             # Glow effect (stacking semi-transparent wider rectangles for neon glow)
             glow_color = color
             for glow_w in [1.08, 1.04, 1.02]:
-                ax.add_patch(Rectangle((x - 0.002, y - (h * glow_w) / 2), w + 0.004, h * glow_w,
-                                        facecolor=glow_color, alpha=0.08,
-                                        linewidth=0, zorder=1))
+                ax.add_patch(FancyBboxPatch((x - 0.002, y - (h * glow_w) / 2), w + 0.004, h * glow_w,
+                                             boxstyle="round,pad=0,rounding_size=0.015",
+                                             facecolor=glow_color, alpha=0.08,
+                                             linewidth=0, zorder=1))
             # Bright core
-            ax.add_patch(Rectangle((x, y - h / 2), w, h,
-                                    facecolor="#FFFFFF", edgecolor=color, linewidth=2.0, zorder=2))
+            ax.add_patch(FancyBboxPatch((x, y - h / 2), w, h,
+                                         boxstyle="round,pad=0,rounding_size=0.015",
+                                         facecolor="#FFFFFF", edgecolor=color, linewidth=2.0, zorder=2))
 
         elif style == "Glassmorphism":
             # Glass semi-transparent look with sharp white specular accent border
-            ax.add_patch(Rectangle((x, y - h / 2), w, h,
-                                    facecolor=color, alpha=0.45,
-                                    edgecolor="white", linewidth=0.8, zorder=2))
+            ax.add_patch(FancyBboxPatch((x, y - h / 2), w, h,
+                                         boxstyle="round,pad=0,rounding_size=0.015",
+                                         facecolor=color, alpha=0.45,
+                                         edgecolor="white", linewidth=0.8, zorder=2))
             # Subtle internal specular diagonal reflection
-            ax.add_patch(Rectangle((x, y + h / 4), w, h / 6,
-                                    facecolor="white", alpha=0.15,
-                                    linewidth=0, zorder=3))
+            ax.add_patch(FancyBboxPatch((x, y + h / 4), w, h / 6,
+                                         boxstyle="round,pad=0,rounding_size=0.008",
+                                         facecolor="white", alpha=0.15,
+                                         linewidth=0, zorder=3))
 
         else:  # "Subtle 3D" (default)
             # ── Main body ───────────────────────────────────────────────
-            ax.add_patch(Rectangle((x, y - h / 2), w, h,
-                                    facecolor=color, alpha=0.92,
-                                    linewidth=0, zorder=2))
+            ax.add_patch(FancyBboxPatch((x, y - h / 2), w, h,
+                                         boxstyle="round,pad=0,rounding_size=0.015",
+                                         facecolor=color, alpha=0.92,
+                                         linewidth=0, zorder=2))
 
             # ── Top highlight (18 % of height, subtle) ──────────────────
             hl_h = h * 0.22
-            ax.add_patch(Rectangle((x, y + h / 2 - hl_h), w, hl_h,
-                                    facecolor="white", alpha=0.13,
-                                    linewidth=0, zorder=3))
+            ax.add_patch(FancyBboxPatch((x, y + h / 2 - hl_h), w, hl_h,
+                                         boxstyle="round,pad=0,rounding_size=0.008",
+                                         facecolor="white", alpha=0.13,
+                                         linewidth=0, zorder=3))
 
             # ── Bottom shadow (10 % of height, soft) ────────────────────
-            ax.add_patch(Rectangle((x, y - h / 2), w, h * 0.10,
-                                    facecolor="black", alpha=0.15,
-                                    linewidth=0, zorder=3))
+            ax.add_patch(FancyBboxPatch((x, y - h / 2), w, h * 0.10,
+                                         boxstyle="round,pad=0,rounding_size=0.008",
+                                         facecolor="black", alpha=0.15,
+                                         linewidth=0, zorder=3))
 
             # ── Top-edge accent line (thin, low opacity) ─────────────────
             border_color = _adjust_lightness(color, 1.45)
-            ax.add_patch(Rectangle((x, y + h / 2 - h * 0.04), w, h * 0.04,
-                                    facecolor=border_color, alpha=0.35,
-                                    linewidth=0, zorder=3))
+            ax.add_patch(FancyBboxPatch((x, y + h / 2 - h * 0.04), w, h * 0.04,
+                                         boxstyle="round,pad=0,rounding_size=0.005",
+                                         facecolor=border_color, alpha=0.35,
+                                         linewidth=0, zorder=3))
 
     # ------------------------------------------------------------------
     # Logo overlay
@@ -261,14 +270,19 @@ class BarChartRaceRenderer:
         fig.patch.set_facecolor(self.bg_color)
 
         # ── Mobile & TikTok/Shorts Safe Zone Margin Setup ───────────────────
-        # Left/Right safe margins: we compress the active chart horizontally (0.10 to 0.90)
-        # Top/Bottom safe margins: we reserve 0.22 at the top (for title) and 0.15 at the bottom (for descriptions/buttons)
-        ax = fig.add_axes([0.10, 0.15, 0.80, 0.63])
+        # Left/Right safe margins: 14% to 86% (X-axis co-ordinates)
+        # Top/Bottom: we reserve 0.19 at the top (for title) and 0.08 at the bottom.
+        # Height of chart is 0.73
+        ax = fig.add_axes([0.14, 0.08, 0.72, 0.73])
         ax.set_facecolor(self.bg_color)
         ax.tick_params(left=False, bottom=False,
                        labelleft=False, labelbottom=False)
         for sp in ax.spines.values():
             sp.set_visible(False)
+
+        # Configure high-quality modern sans-serif fonts natively supported on Windows and popular systems
+        plt.rcParams['font.sans-serif'] = ['Segoe UI', 'Inter', 'Outfit', 'Helvetica', 'Arial', 'sans-serif']
+        plt.rcParams['font.family'] = 'sans-serif'
 
         # ── Interpolate Rank Positions for Smooth Vertical Movement ──
         all_sorted = sorted(
@@ -289,34 +303,29 @@ class BarChartRaceRenderer:
         max_val = max(v for _, v in sorted_items) or 1.0
 
         # ── Premium Safe-Zone Coordinates ──
-        # Since ax takes [0.10, 0.10] to [0.90, 0.78] in figure coordinates,
-        # our internal ax X-limits (0.0 to 1.0) map beautifully with safe spaces.
-        RANK_X = 0.015    # Kept left
+        # Left edge of rank, logo, name and bar start exactly at BAR_L = 0.015
+        # Right edge of bar and value ends exactly at BAR_L + BAR_W = 0.985
+        RANK_X = 0.015
         
         if self.show_logos:
-            # We align entities exactly like the reference image:
-            # #1  Name                      Value
-            # |█████████████████████████████████|
             LOGO_X = 0.080
-            NAME_L = 0.082   # Left-aligned entity name, starting right after rank/logo
-            BAR_L  = 0.015   # Bar starts at left safe zone
-            BAR_W  = 0.970   # Bar stretches all the way to the right safe zone!
+            NAME_L = 0.140   # Shift name right to avoid overlap with rank/logo
+            BAR_L  = 0.015
+            BAR_W  = 0.970
         else:
             LOGO_X = None
-            NAME_L = 0.015   # Left-aligned entity name right at the start
+            NAME_L = 0.015   # Aligns name exactly with left edge of bar (no logo/rank shown)
             BAR_L  = 0.015
             BAR_W  = 0.970
 
-        BAR_H  = 0.35        # Thinner sleek bars (like the image)
-
-        # Matplotlib premium typography settings matching the reference image
-        font_config = {"fontname": "Segoe UI", "fontweight": "bold"}
+        # Premium typography settings matching the reference image
+        font_config = {"fontweight": "semibold"}
         
-        # Adaptive font sizes
+        # Adaptive font sizes optimized for vertical layout readability
         nf       = max(n, 3)
-        rank_fs  = max(11, min(15, int(150 / nf)))
-        name_fs  = max(13, min(21, int(185 / nf)))
-        val_fs   = max(13, min(21, int(185 / nf)))
+        rank_fs  = max(12, min(16, int(160 / nf)))
+        name_fs  = max(14, min(22, int(200 / nf)))
+        val_fs   = max(14, min(22, int(200 / nf)))
 
         for rank, (entity, val) in enumerate(sorted_items):
             y     = entity_target_y[entity]
@@ -324,66 +333,72 @@ class BarChartRaceRenderer:
             bw    = (val / max_val) * BAR_W if max_val > 0 else 0.0
 
             # 1. Background Bar (Sleek dark track behind the active bar, like the image)
-            ax.add_patch(Rectangle((BAR_L, y - 0.22), BAR_W, 0.24,
-                                    facecolor="#1A1F2C", alpha=0.85,
-                                    linewidth=0, zorder=1))
+            # Center of the bar is at y - 0.20, height is 0.24, rounded corners
+            BAR_H = 0.24
+            y_bar = y - 0.20
+            ax.add_patch(FancyBboxPatch((BAR_L, y_bar - BAR_H / 2), BAR_W, BAR_H,
+                                         boxstyle="round,pad=0,rounding_size=0.015",
+                                         facecolor="#1A1F2C", alpha=0.85,
+                                         linewidth=0, zorder=1))
 
-            # 2. Styled Active Bar (Placed slightly lower than text for a stacked look, like the image)
-            self._draw_styled_bar(ax, BAR_L, y - 0.22, bw, 0.24, color)
+            # 2. Styled Active Bar (Placed perfectly centered at y_bar, matching background bar)
+            self._draw_styled_bar(ax, BAR_L, y_bar, bw, BAR_H, color)
 
-            # 3. Rank number (#1, #2...) - muted slate gray, elegant
-            ax.text(RANK_X, y + 0.14, f"#{rank + 1}",
-                    ha="left", va="center",
-                    color="#475569", fontsize=rank_fs, zorder=6, **font_config)
+            # 3. Rank number (#1, #2...) - muted slate gray, left aligned (only if show_logos is True)
+            if self.show_logos:
+                ax.text(RANK_X, y + 0.16, f"#{rank + 1}",
+                        ha="left", va="center",
+                        color="#475569", fontsize=rank_fs, zorder=6, **font_config)
 
             # 4. Avatar (Only drawn if show_logos is True)
             if self.show_logos:
                 logo_img = self._logo_cache.get(entity)
                 if logo_img is not None:
-                    self._draw_logo(ax, logo_img, LOGO_X, y + 0.14)
+                    self._draw_logo(ax, logo_img, LOGO_X, y + 0.16)
                 else:
-                    self._draw_avatar_fallback(ax, entity, color, LOGO_X, y + 0.14, name_fs)
+                    self._draw_avatar_fallback(ax, entity, color, LOGO_X, y + 0.16, name_fs)
 
-            # 5. Entity name - left-aligned, bright white, elegant
-            ax.text(NAME_L + (0.05 if self.show_logos else 0.0), y + 0.14, entity,
+            # 5. Entity name - left-aligned above the bar, bright white, clean sans-serif
+            # Prefix with order (e.g. "1. Arsenal") when logos are disabled for an ultra clean look
+            display_name = f"{rank + 1}. {entity}" if not self.show_logos else entity
+            ax.text(NAME_L, y + 0.16, display_name,
                     ha="left", va="center",
                     color="#FFFFFF", fontsize=name_fs, zorder=6, **font_config)
 
-            # 6. Value - right-aligned at the end of the bar grid, bold
+            # 6. Value - right-aligned above the bar, bold
             val_str = f"{val:,.0f}" if val >= 1 else f"{val:.2f}"
-            ax.text(BAR_L + BAR_W - 0.015, y + 0.14, val_str,
+            ax.text(BAR_L + BAR_W - 0.015, y + 0.16, val_str,
                     ha="right", va="center",
                     color="#FFFFFF", fontsize=val_fs, zorder=6, **font_config)
 
         ax.set_xlim(0.0, 1.0)
         ax.set_ylim(-0.75, self.top_n - 0.25)
 
-        # ── Premium Stacked Header (Strictly Centered & Safe from Mobile Overlap) ──
-        # Small Category subtitle - elegant light blue/indigo uppercase
-        # We manually space out the characters (e.g. 'A B C') to achieve the premium tracked look, since Matplotlib Text doesn't support 'letter_spacing'
-        spaced_title = "  ".join(list(self.title.upper()))
-        fig.text(0.50, 0.88, spaced_title,
+        # ── Premium Stacked Header (Brings title and chart closer together with perfect proportions) ──
+        # Small Category subtitle - elegant light blue/cyan uppercase (Y shifted to 0.93)
+        spaced_title = "   ".join(list(self.title.upper()))
+        fig.text(0.50, 0.93, spaced_title,
                  ha="center", va="center",
-                 color="#60A5FA", fontsize=10, fontweight="bold")
+                 color="#38BDF8", fontsize=15, fontweight="bold")
 
-        # Big bold title: "Thứ hạng qua từng vòng"
-        fig.text(0.50, 0.81, "Thứ hạng qua từng vòng",
+        # Big bold title: "Thứ hạng qua từng vòng" (Y shifted to 0.89)
+        fig.text(0.50, 0.89, "Thứ hạng qua từng vòng",
                  ha="center", va="center",
-                 color="#FFFFFF", fontsize=27, fontweight="black")
+                 color="#FFFFFF", fontsize=32, fontweight="bold")
 
-        # Bottom dynamic subtitle: "Bảng xếp hạng sau vòng X"
-        fig.text(0.50, 0.74, f"Bảng xếp hạng sau vòng {time_label}",
+        # Bottom dynamic subtitle: "Bảng xếp hạng sau vòng X" (Y shifted to 0.85)
+        fig.text(0.50, 0.85, f"Bảng xếp hạng sau vòng {time_label}",
                  ha="center", va="center",
-                 color="#94A3B8", fontsize=13, fontweight="medium")
+                 color="#94A3B8", fontsize=18, fontweight="normal")
 
         # ── Watermark & Unit label (bottom safe zone) ───────────────────────
         if self.unit_label:
-            fig.text(0.50, 0.07, f"● {self.unit_label}",
+            fig.text(0.50, 0.04, f"● {self.unit_label}",
                      ha="center", va="center",
                      color="#64748B", fontsize=11, fontweight="semibold")
 
         if self.watermark:
-            fig.text(0.50, 0.03, self.watermark,
+            fig.text(0.50, 0.02, self.watermark,
                      ha="center", va="center",
                      color="#334155", fontsize=9, fontweight="bold")
 
