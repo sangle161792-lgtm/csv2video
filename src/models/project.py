@@ -36,6 +36,7 @@ class AppState:
             "top_n": 10,
             "bg_color": "#0D0D18",
             "show_logos": True,        # Toggle to show or hide logos/badges entirely
+            "chart_style": "Subtle 3D", # Visual style: "Subtle 3D", "Classic 2D", "Retro Neon", "Glassmorphism"
             "colors": {},              # entity -> hex color string
             "logos": {},               # entity -> image file path
         }

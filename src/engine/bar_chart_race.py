@@ -97,6 +97,7 @@ class BarChartRaceRenderer:
         self.fps:        int   = int(config.get("fps", 30))
         self.sps:        float = float(config.get("seconds_per_step", 2.0))
         self.show_logos: bool  = bool(config.get("show_logos", True))
+        self.chart_style: str  = str(config.get("chart_style", "Subtle 3D"))
 
         # Pre-load logos into cache
         self._logo_cache: Dict[str, Optional[np.ndarray]] = {}
@@ -148,32 +149,62 @@ class BarChartRaceRenderer:
     # 3-D bar drawing
     # ------------------------------------------------------------------
 
-    def _draw_3d_bar(self, ax, x: float, y: float, w: float, h: float, color: str):
-        """Draw a horizontal bar with subtle highlight / shadow for a mild 3-D look."""
+    def _draw_styled_bar(self, ax, x: float, y: float, w: float, h: float, color: str):
+        """Draw a horizontal bar matching the selected visual style configuration."""
         if w <= 0:
             return
 
-        # ── Main body ───────────────────────────────────────────────
-        ax.add_patch(Rectangle((x, y - h / 2), w, h,
-                                facecolor=color, alpha=0.92,
-                                linewidth=0, zorder=2))
+        style = self.chart_style
 
-        # ── Top highlight (18 % of height, subtle) ──────────────────
-        hl_h = h * 0.22
-        ax.add_patch(Rectangle((x, y + h / 2 - hl_h), w, hl_h,
-                                facecolor="white", alpha=0.13,
-                                linewidth=0, zorder=3))
+        if style == "Classic 2D":
+            # Flat solid bar with nice thin border
+            ax.add_patch(Rectangle((x, y - h / 2), w, h,
+                                    facecolor=color, alpha=0.95,
+                                    edgecolor="white", linewidth=0.5, zorder=2))
 
-        # ── Bottom shadow (10 % of height, soft) ────────────────────
-        ax.add_patch(Rectangle((x, y - h / 2), w, h * 0.10,
-                                facecolor="black", alpha=0.15,
-                                linewidth=0, zorder=3))
+        elif style == "Retro Neon":
+            # Glow effect (stacking semi-transparent wider rectangles for neon glow)
+            glow_color = color
+            for glow_w in [1.08, 1.04, 1.02]:
+                ax.add_patch(Rectangle((x - 0.002, y - (h * glow_w) / 2), w + 0.004, h * glow_w,
+                                        facecolor=glow_color, alpha=0.08,
+                                        linewidth=0, zorder=1))
+            # Bright core
+            ax.add_patch(Rectangle((x, y - h / 2), w, h,
+                                    facecolor="#FFFFFF", edgecolor=color, linewidth=2.0, zorder=2))
 
-        # ── Top-edge accent line (thin, low opacity) ─────────────────
-        border_color = _adjust_lightness(color, 1.45)
-        ax.add_patch(Rectangle((x, y + h / 2 - h * 0.04), w, h * 0.04,
-                                facecolor=border_color, alpha=0.35,
-                                linewidth=0, zorder=3))
+        elif style == "Glassmorphism":
+            # Glass semi-transparent look with sharp white specular accent border
+            ax.add_patch(Rectangle((x, y - h / 2), w, h,
+                                    facecolor=color, alpha=0.45,
+                                    edgecolor="white", linewidth=0.8, zorder=2))
+            # Subtle internal specular diagonal reflection
+            ax.add_patch(Rectangle((x, y + h / 4), w, h / 6,
+                                    facecolor="white", alpha=0.15,
+                                    linewidth=0, zorder=3))
+
+        else:  # "Subtle 3D" (default)
+            # ── Main body ───────────────────────────────────────────────
+            ax.add_patch(Rectangle((x, y - h / 2), w, h,
+                                    facecolor=color, alpha=0.92,
+                                    linewidth=0, zorder=2))
+
+            # ── Top highlight (18 % of height, subtle) ──────────────────
+            hl_h = h * 0.22
+            ax.add_patch(Rectangle((x, y + h / 2 - hl_h), w, hl_h,
+                                    facecolor="white", alpha=0.13,
+                                    linewidth=0, zorder=3))
+
+            # ── Bottom shadow (10 % of height, soft) ────────────────────
+            ax.add_patch(Rectangle((x, y - h / 2), w, h * 0.10,
+                                    facecolor="black", alpha=0.15,
+                                    linewidth=0, zorder=3))
+
+            # ── Top-edge accent line (thin, low opacity) ─────────────────
+            border_color = _adjust_lightness(color, 1.45)
+            ax.add_patch(Rectangle((x, y + h / 2 - h * 0.04), w, h * 0.04,
+                                    facecolor=border_color, alpha=0.35,
+                                    linewidth=0, zorder=3))
 
     # ------------------------------------------------------------------
     # Logo overlay
@@ -292,8 +323,8 @@ class BarChartRaceRenderer:
             color = self.entity_colors.get(entity, "#7C7CFF")
             bw    = (val / max_val) * BAR_W if max_val > 0 else 0.0
 
-            # 3-D bar
-            self._draw_3d_bar(ax, BAR_L, y, bw, BAR_H, color)
+            # Styled bar matching template choice
+            self._draw_styled_bar(ax, BAR_L, y, bw, BAR_H, color)
 
             # Rank number — large and prominent
             ax.text(RANK_X, y, f"#{rank + 1}",

@@ -243,6 +243,13 @@ class SettingsPage(QWidget):
         self._logos_check.setCursor(Qt.CursorShape.PointingHandCursor)
         form.addRow(self._make_lbl("Avatars"), self._logos_check)
 
+        # Chart Style Selector
+        self._style_combo = QComboBox()
+        self._style_options = ["Subtle 3D", "Classic 2D", "Retro Neon", "Glassmorphism"]
+        for opt in self._style_options:
+            self._style_combo.addItem(opt)
+        form.addRow(self._make_lbl("Bar Style"), self._style_combo)
+
         # Estimated duration (read-only)
         self._duration_lbl = QLabel("—")
         self._duration_lbl.setObjectName("hint_label")
@@ -381,6 +388,11 @@ class SettingsPage(QWidget):
         self._topn_spin.setValue(cfg.get("top_n", 10))
         self._logos_check.setChecked(cfg.get("show_logos", True))
 
+        # Sync style combo box
+        cur_style = cfg.get("chart_style", "Subtle 3D")
+        if cur_style in self._style_options:
+            self._style_combo.setCurrentIndex(self._style_options.index(cur_style))
+
         self._update_duration_label()
 
     def _save(self):
@@ -394,6 +406,7 @@ class SettingsPage(QWidget):
         cfg["bg_color"]         = self._bg_btn.get_color()
         cfg["top_n"]            = self._topn_spin.value()
         cfg["show_logos"]       = self._logos_check.isChecked()
+        cfg["chart_style"]      = self._style_options[self._style_combo.currentIndex()]
         cfg["colors"]           = {e: b.get_color() for e, b in self._color_btns.items()}
         # logos already updated in real-time by _pick_logo / _clear_logo
 
