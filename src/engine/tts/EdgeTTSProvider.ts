@@ -1,0 +1,2 @@
+import {spawn} from 'node:child_process';import type {TTSInput,TTSProvider,TTSResult} from './types';
+export class EdgeTTSProvider implements TTSProvider {readonly id='edge';constructor(private voice='vi-VN-HoaiMyNeural'){}async synthesize(i:TTSInput):Promise<TTSResult>{await new Promise<void>((ok,no)=>{const p=spawn('python3',['-m','edge_tts','--voice',i.voice||this.voice,'--text',i.text,'--write-media',i.outputPath]);p.on('exit',c=>c?no(new Error(`edge-tts exited ${c}`)):ok())});return {audioPath:i.outputPath,provider:this.id,voice:i.voice||this.voice}}}

@@ -1,0 +1,3 @@
+import fs from 'node:fs';import path from 'node:path';import YAML from 'yaml';import {EpisodeSchema} from './schema';import type {Episode} from '../types';
+export const resolveEpisode=(arg:string)=>path.resolve(arg.includes('/')?arg:`episodes/${arg}`);
+export function loadEpisode(dir:string):Episode {const file=path.join(dir,'episode.yaml');if(!fs.existsSync(file))throw new Error(`Missing ${file}`);const parsed=EpisodeSchema.safeParse(YAML.parse(fs.readFileSync(file,'utf8')));if(!parsed.success)throw new Error(`Invalid episode YAML:\n${parsed.error.issues.map(i=>`  ${i.path.join('.')}: ${i.message}`).join('\n')}`);return parsed.data as Episode}

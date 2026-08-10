@@ -1,0 +1,1 @@
+import React from 'react';export const Subtitle=({text}:{text:string})=><div style={{position:'absolute',zIndex:20,left:'12%',right:'12%',bottom:50,textAlign:'center',color:'white',font:'700 34px Arial',lineHeight:1.3,textShadow:'0 3px 7px #000,0 0 2px #000',padding:'12px 20px',background:'#10242bb8',borderRadius:18}}>{text}</div>;

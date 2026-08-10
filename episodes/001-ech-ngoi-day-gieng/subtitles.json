@@ -1,0 +1,58 @@
+[
+  {
+    "id": "narrator-001",
+    "start": 5.5,
+    "end": 10.5,
+    "text": "Ngày xưa, có một chú ếch sống lâu ngày trong một chiếc giếng nhỏ.",
+    "speaker": "narrator"
+  },
+  {
+    "id": "narrator-002",
+    "start": 12.5,
+    "end": 17.65,
+    "text": "Quanh chú chỉ có vài con vật bé nhỏ và một khoảng trời tròn xíu trên cao.",
+    "speaker": "narrator"
+  },
+  {
+    "id": "frog-001",
+    "start": 18.5,
+    "end": 23.65,
+    "text": "Ngày nào ta cũng cất tiếng kêu vang. Ai ở đây cũng phải nể sợ ta!",
+    "speaker": "frog"
+  },
+  {
+    "id": "frog-002",
+    "start": 24.5,
+    "end": 29.857142857142858,
+    "text": "Bầu trời chỉ bé bằng cái vung. Ở đây, ta chính là kẻ mạnh nhất!",
+    "speaker": "frog"
+  },
+  {
+    "id": "narrator-003",
+    "start": 37.5,
+    "end": 43.57142857142857,
+    "text": "Rồi một trận mưa lớn làm nước giếng dâng cao, đưa ếch ra khỏi nơi chật hẹp.",
+    "speaker": "narrator"
+  },
+  {
+    "id": "narrator-004",
+    "start": 44.5,
+    "end": 51.65,
+    "text": "Lần đầu nhìn bầu trời rộng lớn, chú sững sờ. Thế giới lớn hơn rất nhiều so với điều chú từng biết.",
+    "speaker": "narrator"
+  },
+  {
+    "id": "frog-003",
+    "start": 52.5,
+    "end": 55.0,
+    "text": "Hóa ra mình còn biết quá ít.",
+    "speaker": "frog"
+  },
+  {
+    "id": "lesson-001",
+    "start": 57.5,
+    "end": 61.42857142857143,
+    "text": "Đừng vội cho rằng những gì mình biết là tất cả.",
+    "speaker": "narrator"
+  }
+]

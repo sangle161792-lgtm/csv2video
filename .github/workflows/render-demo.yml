@@ -1,0 +1,78 @@
+name: Render fable demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: Episode directory name
+        required: true
+        default: 001-ech-ngoi-day-gieng
+        type: string
+      voice_provider:
+        description: Registered TTS provider
+        required: true
+        default: edge
+        type: choice
+        options:
+          - edge
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      EPISODE_DIR: episodes/${{ inputs.episode }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Node dependencies
+        # Use npm install until the repository can generate and commit a lockfile.
+        # Replace with npm ci after package-lock.json is present.
+        run: npm install
+
+      - name: Install Edge TTS
+        run: python -m pip install --disable-pip-version-check edge-tts
+
+      - name: Validate episode
+        run: npm run validate -- "$EPISODE_DIR"
+
+      - name: Run engine tests
+        run: npm test
+
+      - name: Check TypeScript
+        run: npm run typecheck
+
+      - name: Generate Vietnamese voice
+        run: npm run voice -- "$EPISODE_DIR" --provider "${{ inputs.voice_provider }}"
+
+      - name: Compile timeline and subtitles
+        run: npm run timeline -- "$EPISODE_DIR"
+
+      - name: Render MP4
+        run: npm run render -- "$EPISODE_DIR"
+
+      - name: Upload rendered video and metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.episode }}-render
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            output/${{ inputs.episode }}/demo.mp4
+            episodes/${{ inputs.episode }}/timeline.json
+            episodes/${{ inputs.episode }}/subtitles.json
+            episodes/${{ inputs.episode }}/subtitles.srt

@@ -1,0 +1,63 @@
+episode:
+  id: 001-ech-ngoi-day-gieng
+  title: "Ếch ngồi đáy giếng"
+  fps: 30
+  width: 1280
+  height: 720
+shots:
+  - id: opening-title
+    duration: 5
+    environment: village
+    camera: {shot: wide, movement: {type: push_in, intensity: subtle}}
+  - id: village-establishing
+    duration: 7
+    environment: village
+    transition: fade
+    camera: {shot: wide, movement: {type: pan}}
+    dialogue: {id: narrator-001, speaker: narrator, text: "Ngày xưa, có một chú ếch sống lâu ngày trong một chiếc giếng nhỏ.", audio: audio/narrator-001.mp3}
+  - id: descend-well
+    duration: 6
+    environment: well
+    camera: {shot: wide, movement: {type: tilt}}
+    dialogue: {id: narrator-002, speaker: narrator, text: "Quanh chú chỉ có vài con vật bé nhỏ và một khoảng trời tròn xíu trên cao.", audio: audio/narrator-002.mp3}
+    actions: [{type: idle}, {type: blink}, {type: look_up}]
+  - id: frog-world
+    duration: 6
+    environment: well
+    camera: {shot: medium, movement: {type: follow}}
+    dialogue: {id: frog-001, speaker: frog, text: "Ngày nào ta cũng cất tiếng kêu vang. Ai ở đây cũng phải nể sợ ta!", audio: audio/frog-001.mp3}
+    actions: [{type: idle}, {type: proud}, {type: talk}]
+  - id: boast-jump
+    duration: 8
+    environment: well
+    camera: {shot: close, movement: {type: push_in}}
+    dialogue: {id: frog-002, speaker: frog, text: "Bầu trời chỉ bé bằng cái vung. Ở đây, ta chính là kẻ mạnh nhất!", audio: audio/frog-002.mp3}
+    actions: [{type: jump}, {type: proud}, {type: talk}]
+  - id: quiet-reaction
+    duration: 5
+    environment: well
+    camera: {shot: medium, movement: {type: pull_out}}
+    actions: [{type: blink}, {type: idle}]
+  - id: rain-rises
+    duration: 7
+    environment: well
+    camera: {shot: close, movement: {type: shake}}
+    dialogue: {id: narrator-003, speaker: narrator, text: "Rồi một trận mưa lớn làm nước giếng dâng cao, đưa ếch ra khỏi nơi chật hẹp.", audio: audio/narrator-003.mp3}
+    actions: [{type: surprised}]
+  - id: first-sky
+    duration: 8
+    environment: outside
+    camera: {shot: wide, movement: {type: pull_out}}
+    dialogue: {id: narrator-004, speaker: narrator, text: "Lần đầu nhìn bầu trời rộng lớn, chú sững sờ. Thế giới lớn hơn rất nhiều so với điều chú từng biết.", audio: audio/narrator-004.mp3}
+    actions: [{type: surprised}, {type: blink}]
+  - id: humble-frog
+    duration: 5
+    environment: outside
+    camera: {shot: medium, movement: {type: static}}
+    dialogue: {id: frog-003, speaker: frog, text: "Hóa ra mình còn biết quá ít.", audio: audio/frog-003.mp3}
+    actions: [{type: talk}, {type: surprised}]
+  - id: lesson-card
+    duration: 7
+    environment: lesson
+    camera: {shot: wide, movement: {type: push_in, intensity: subtle}}
+    dialogue: {id: lesson-001, speaker: narrator, text: "Đừng vội cho rằng những gì mình biết là tất cả.", audio: audio/lesson-001.mp3}

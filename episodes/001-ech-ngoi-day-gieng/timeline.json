@@ -1,0 +1,1725 @@
+{
+  "episode": {
+    "id": "001-ech-ngoi-day-gieng",
+    "title": "Ếch ngồi đáy giếng",
+    "fps": 30,
+    "width": 1280,
+    "height": 720
+  },
+  "duration": 64.0,
+  "shots": [
+    {
+      "id": "opening-title",
+      "duration": 5.0,
+      "environment": "village",
+      "camera": {
+        "shot": "wide",
+        "movement": {
+          "type": "push_in",
+          "intensity": "subtle"
+        }
+      },
+      "start": 0.0,
+      "end": 5.0
+    },
+    {
+      "id": "village-establishing",
+      "duration": 7.0,
+      "environment": "village",
+      "transition": "fade",
+      "camera": {
+        "shot": "wide",
+        "movement": {
+          "type": "pan"
+        }
+      },
+      "dialogue": {
+        "id": "narrator-001",
+        "speaker": "narrator",
+        "text": "Ngày xưa, có một chú ếch sống lâu ngày trong một chiếc giếng nhỏ.",
+        "audio": "audio/narrator-001.mp3"
+      },
+      "start": 5.0,
+      "end": 12.0
+    },
+    {
+      "id": "descend-well",
+      "duration": 6.0,
+      "environment": "well",
+      "camera": {
+        "shot": "wide",
+        "movement": {
+          "type": "tilt"
+        }
+      },
+      "dialogue": {
+        "id": "narrator-002",
+        "speaker": "narrator",
+        "text": "Quanh chú chỉ có vài con vật bé nhỏ và một khoảng trời tròn xíu trên cao.",
+        "audio": "audio/narrator-002.mp3"
+      },
+      "actions": [
+        {
+          "type": "idle"
+        },
+        {
+          "type": "blink"
+        },
+        {
+          "type": "look_up"
+        }
+      ],
+      "start": 12.0,
+      "end": 18.0
+    },
+    {
+      "id": "frog-world",
+      "duration": 6.0,
+      "environment": "well",
+      "camera": {
+        "shot": "medium",
+        "movement": {
+          "type": "follow"
+        }
+      },
+      "dialogue": {
+        "id": "frog-001",
+        "speaker": "frog",
+        "text": "Ngày nào ta cũng cất tiếng kêu vang. Ai ở đây cũng phải nể sợ ta!",
+        "audio": "audio/frog-001.mp3"
+      },
+      "actions": [
+        {
+          "type": "idle"
+        },
+        {
+          "type": "proud"
+        },
+        {
+          "type": "talk"
+        }
+      ],
+      "start": 18.0,
+      "end": 24.0
+    },
+    {
+      "id": "boast-jump",
+      "duration": 8.0,
+      "environment": "well",
+      "camera": {
+        "shot": "close",
+        "movement": {
+          "type": "push_in"
+        }
+      },
+      "dialogue": {
+        "id": "frog-002",
+        "speaker": "frog",
+        "text": "Bầu trời chỉ bé bằng cái vung. Ở đây, ta chính là kẻ mạnh nhất!",
+        "audio": "audio/frog-002.mp3"
+      },
+      "actions": [
+        {
+          "type": "jump"
+        },
+        {
+          "type": "proud"
+        },
+        {
+          "type": "talk"
+        }
+      ],
+      "start": 24.0,
+      "end": 32.0
+    },
+    {
+      "id": "quiet-reaction",
+      "duration": 5.0,
+      "environment": "well",
+      "camera": {
+        "shot": "medium",
+        "movement": {
+          "type": "pull_out"
+        }
+      },
+      "actions": [
+        {
+          "type": "blink"
+        },
+        {
+          "type": "idle"
+        }
+      ],
+      "start": 32.0,
+      "end": 37.0
+    },
+    {
+      "id": "rain-rises",
+      "duration": 7.0,
+      "environment": "well",
+      "camera": {
+        "shot": "close",
+        "movement": {
+          "type": "shake"
+        }
+      },
+      "dialogue": {
+        "id": "narrator-003",
+        "speaker": "narrator",
+        "text": "Rồi một trận mưa lớn làm nước giếng dâng cao, đưa ếch ra khỏi nơi chật hẹp.",
+        "audio": "audio/narrator-003.mp3"
+      },
+      "actions": [
+        {
+          "type": "surprised"
+        }
+      ],
+      "start": 37.0,
+      "end": 44.0
+    },
+    {
+      "id": "first-sky",
+      "duration": 8.0,
+      "environment": "outside",
+      "camera": {
+        "shot": "wide",
+        "movement": {
+          "type": "pull_out"
+        }
+      },
+      "dialogue": {
+        "id": "narrator-004",
+        "speaker": "narrator",
+        "text": "Lần đầu nhìn bầu trời rộng lớn, chú sững sờ. Thế giới lớn hơn rất nhiều so với điều chú từng biết.",
+        "audio": "audio/narrator-004.mp3"
+      },
+      "actions": [
+        {
+          "type": "surprised"
+        },
+        {
+          "type": "blink"
+        }
+      ],
+      "start": 44.0,
+      "end": 52.0
+    },
+    {
+      "id": "humble-frog",
+      "duration": 5.0,
+      "environment": "outside",
+      "camera": {
+        "shot": "medium",
+        "movement": {
+          "type": "static"
+        }
+      },
+      "dialogue": {
+        "id": "frog-003",
+        "speaker": "frog",
+        "text": "Hóa ra mình còn biết quá ít.",
+        "audio": "audio/frog-003.mp3"
+      },
+      "actions": [
+        {
+          "type": "talk"
+        },
+        {
+          "type": "surprised"
+        }
+      ],
+      "start": 52.0,
+      "end": 57.0
+    },
+    {
+      "id": "lesson-card",
+      "duration": 7.0,
+      "environment": "lesson",
+      "camera": {
+        "shot": "wide",
+        "movement": {
+          "type": "push_in",
+          "intensity": "subtle"
+        }
+      },
+      "dialogue": {
+        "id": "lesson-001",
+        "speaker": "narrator",
+        "text": "Đừng vội cho rằng những gì mình biết là tất cả.",
+        "audio": "audio/lesson-001.mp3"
+      },
+      "start": 57.0,
+      "end": 64.0
+    }
+  ],
+  "dialogues": {
+    "narrator-001": {
+      "id": "narrator-001",
+      "speaker": "narrator",
+      "text": "Ngày xưa, có một chú ếch sống lâu ngày trong một chiếc giếng nhỏ.",
+      "audio": "audio/narrator-001.mp3",
+      "start": 5.5,
+      "end": 10.5,
+      "duration": 5.0,
+      "shotId": "village-establishing"
+    },
+    "narrator-002": {
+      "id": "narrator-002",
+      "speaker": "narrator",
+      "text": "Quanh chú chỉ có vài con vật bé nhỏ và một khoảng trời tròn xíu trên cao.",
+      "audio": "audio/narrator-002.mp3",
+      "start": 12.5,
+      "end": 17.65,
+      "duration": 5.15,
+      "shotId": "descend-well"
+    },
+    "frog-001": {
+      "id": "frog-001",
+      "speaker": "frog",
+      "text": "Ngày nào ta cũng cất tiếng kêu vang. Ai ở đây cũng phải nể sợ ta!",
+      "audio": "audio/frog-001.mp3",
+      "start": 18.5,
+      "end": 23.65,
+      "duration": 5.15,
+      "shotId": "frog-world"
+    },
+    "frog-002": {
+      "id": "frog-002",
+      "speaker": "frog",
+      "text": "Bầu trời chỉ bé bằng cái vung. Ở đây, ta chính là kẻ mạnh nhất!",
+      "audio": "audio/frog-002.mp3",
+      "start": 24.5,
+      "end": 29.857142857142858,
+      "duration": 5.357142857142858,
+      "shotId": "boast-jump"
+    },
+    "narrator-003": {
+      "id": "narrator-003",
+      "speaker": "narrator",
+      "text": "Rồi một trận mưa lớn làm nước giếng dâng cao, đưa ếch ra khỏi nơi chật hẹp.",
+      "audio": "audio/narrator-003.mp3",
+      "start": 37.5,
+      "end": 43.57142857142857,
+      "duration": 6.071428571428572,
+      "shotId": "rain-rises"
+    },
+    "narrator-004": {
+      "id": "narrator-004",
+      "speaker": "narrator",
+      "text": "Lần đầu nhìn bầu trời rộng lớn, chú sững sờ. Thế giới lớn hơn rất nhiều so với điều chú từng biết.",
+      "audio": "audio/narrator-004.mp3",
+      "start": 44.5,
+      "end": 51.65,
+      "duration": 7.15,
+      "shotId": "first-sky"
+    },
+    "frog-003": {
+      "id": "frog-003",
+      "speaker": "frog",
+      "text": "Hóa ra mình còn biết quá ít.",
+      "audio": "audio/frog-003.mp3",
+      "start": 52.5,
+      "end": 55.0,
+      "duration": 2.5,
+      "shotId": "humble-frog"
+    },
+    "lesson-001": {
+      "id": "lesson-001",
+      "speaker": "narrator",
+      "text": "Đừng vội cho rằng những gì mình biết là tất cả.",
+      "audio": "audio/lesson-001.mp3",
+      "start": 57.5,
+      "end": 61.42857142857143,
+      "duration": 3.928571428571429,
+      "shotId": "lesson-card"
+    }
+  },
+  "subtitles": [
+    {
+      "id": "narrator-001",
+      "start": 5.5,
+      "end": 10.5,
+      "text": "Ngày xưa, có một chú ếch sống lâu ngày trong một chiếc giếng nhỏ.",
+      "speaker": "narrator"
+    },
+    {
+      "id": "narrator-002",
+      "start": 12.5,
+      "end": 17.65,
+      "text": "Quanh chú chỉ có vài con vật bé nhỏ và một khoảng trời tròn xíu trên cao.",
+      "speaker": "narrator"
+    },
+    {
+      "id": "frog-001",
+      "start": 18.5,
+      "end": 23.65,
+      "text": "Ngày nào ta cũng cất tiếng kêu vang. Ai ở đây cũng phải nể sợ ta!",
+      "speaker": "frog"
+    },
+    {
+      "id": "frog-002",
+      "start": 24.5,
+      "end": 29.857142857142858,
+      "text": "Bầu trời chỉ bé bằng cái vung. Ở đây, ta chính là kẻ mạnh nhất!",
+      "speaker": "frog"
+    },
+    {
+      "id": "narrator-003",
+      "start": 37.5,
+      "end": 43.57142857142857,
+      "text": "Rồi một trận mưa lớn làm nước giếng dâng cao, đưa ếch ra khỏi nơi chật hẹp.",
+      "speaker": "narrator"
+    },
+    {
+      "id": "narrator-004",
+      "start": 44.5,
+      "end": 51.65,
+      "text": "Lần đầu nhìn bầu trời rộng lớn, chú sững sờ. Thế giới lớn hơn rất nhiều so với điều chú từng biết.",
+      "speaker": "narrator"
+    },
+    {
+      "id": "frog-003",
+      "start": 52.5,
+      "end": 55.0,
+      "text": "Hóa ra mình còn biết quá ít.",
+      "speaker": "frog"
+    },
+    {
+      "id": "lesson-001",
+      "start": 57.5,
+      "end": 61.42857142857143,
+      "text": "Đừng vội cho rằng những gì mình biết là tất cả.",
+      "speaker": "narrator"
+    }
+  ],
+  "lipSync": {
+    "narrator-001": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      },
+      {
+        "time": 4.0,
+        "state": "closed"
+      },
+      {
+        "time": 4.125,
+        "state": "small"
+      },
+      {
+        "time": 4.25,
+        "state": "medium"
+      },
+      {
+        "time": 4.375,
+        "state": "wide"
+      },
+      {
+        "time": 4.5,
+        "state": "closed"
+      },
+      {
+        "time": 4.625,
+        "state": "small"
+      },
+      {
+        "time": 4.75,
+        "state": "medium"
+      },
+      {
+        "time": 4.875,
+        "state": "wide"
+      },
+      {
+        "time": 5.0,
+        "state": "closed"
+      }
+    ],
+    "narrator-002": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      },
+      {
+        "time": 4.0,
+        "state": "closed"
+      },
+      {
+        "time": 4.125,
+        "state": "small"
+      },
+      {
+        "time": 4.25,
+        "state": "medium"
+      },
+      {
+        "time": 4.375,
+        "state": "wide"
+      },
+      {
+        "time": 4.5,
+        "state": "closed"
+      },
+      {
+        "time": 4.625,
+        "state": "small"
+      },
+      {
+        "time": 4.75,
+        "state": "medium"
+      },
+      {
+        "time": 4.875,
+        "state": "wide"
+      },
+      {
+        "time": 5.0,
+        "state": "closed"
+      },
+      {
+        "time": 5.125,
+        "state": "small"
+      }
+    ],
+    "frog-001": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      },
+      {
+        "time": 4.0,
+        "state": "closed"
+      },
+      {
+        "time": 4.125,
+        "state": "small"
+      },
+      {
+        "time": 4.25,
+        "state": "medium"
+      },
+      {
+        "time": 4.375,
+        "state": "wide"
+      },
+      {
+        "time": 4.5,
+        "state": "closed"
+      },
+      {
+        "time": 4.625,
+        "state": "small"
+      },
+      {
+        "time": 4.75,
+        "state": "medium"
+      },
+      {
+        "time": 4.875,
+        "state": "wide"
+      },
+      {
+        "time": 5.0,
+        "state": "closed"
+      },
+      {
+        "time": 5.125,
+        "state": "small"
+      }
+    ],
+    "frog-002": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      },
+      {
+        "time": 4.0,
+        "state": "closed"
+      },
+      {
+        "time": 4.125,
+        "state": "small"
+      },
+      {
+        "time": 4.25,
+        "state": "medium"
+      },
+      {
+        "time": 4.375,
+        "state": "wide"
+      },
+      {
+        "time": 4.5,
+        "state": "closed"
+      },
+      {
+        "time": 4.625,
+        "state": "small"
+      },
+      {
+        "time": 4.75,
+        "state": "medium"
+      },
+      {
+        "time": 4.875,
+        "state": "wide"
+      },
+      {
+        "time": 5.0,
+        "state": "closed"
+      },
+      {
+        "time": 5.125,
+        "state": "small"
+      },
+      {
+        "time": 5.25,
+        "state": "medium"
+      }
+    ],
+    "narrator-003": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      },
+      {
+        "time": 4.0,
+        "state": "closed"
+      },
+      {
+        "time": 4.125,
+        "state": "small"
+      },
+      {
+        "time": 4.25,
+        "state": "medium"
+      },
+      {
+        "time": 4.375,
+        "state": "wide"
+      },
+      {
+        "time": 4.5,
+        "state": "closed"
+      },
+      {
+        "time": 4.625,
+        "state": "small"
+      },
+      {
+        "time": 4.75,
+        "state": "medium"
+      },
+      {
+        "time": 4.875,
+        "state": "wide"
+      },
+      {
+        "time": 5.0,
+        "state": "closed"
+      },
+      {
+        "time": 5.125,
+        "state": "small"
+      },
+      {
+        "time": 5.25,
+        "state": "medium"
+      },
+      {
+        "time": 5.375,
+        "state": "wide"
+      },
+      {
+        "time": 5.5,
+        "state": "closed"
+      },
+      {
+        "time": 5.625,
+        "state": "small"
+      },
+      {
+        "time": 5.75,
+        "state": "medium"
+      },
+      {
+        "time": 5.875,
+        "state": "wide"
+      },
+      {
+        "time": 6.0,
+        "state": "closed"
+      }
+    ],
+    "narrator-004": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      },
+      {
+        "time": 4.0,
+        "state": "closed"
+      },
+      {
+        "time": 4.125,
+        "state": "small"
+      },
+      {
+        "time": 4.25,
+        "state": "medium"
+      },
+      {
+        "time": 4.375,
+        "state": "wide"
+      },
+      {
+        "time": 4.5,
+        "state": "closed"
+      },
+      {
+        "time": 4.625,
+        "state": "small"
+      },
+      {
+        "time": 4.75,
+        "state": "medium"
+      },
+      {
+        "time": 4.875,
+        "state": "wide"
+      },
+      {
+        "time": 5.0,
+        "state": "closed"
+      },
+      {
+        "time": 5.125,
+        "state": "small"
+      },
+      {
+        "time": 5.25,
+        "state": "medium"
+      },
+      {
+        "time": 5.375,
+        "state": "wide"
+      },
+      {
+        "time": 5.5,
+        "state": "closed"
+      },
+      {
+        "time": 5.625,
+        "state": "small"
+      },
+      {
+        "time": 5.75,
+        "state": "medium"
+      },
+      {
+        "time": 5.875,
+        "state": "wide"
+      },
+      {
+        "time": 6.0,
+        "state": "closed"
+      },
+      {
+        "time": 6.125,
+        "state": "small"
+      },
+      {
+        "time": 6.25,
+        "state": "medium"
+      },
+      {
+        "time": 6.375,
+        "state": "wide"
+      },
+      {
+        "time": 6.5,
+        "state": "closed"
+      },
+      {
+        "time": 6.625,
+        "state": "small"
+      },
+      {
+        "time": 6.75,
+        "state": "medium"
+      },
+      {
+        "time": 6.875,
+        "state": "wide"
+      },
+      {
+        "time": 7.0,
+        "state": "closed"
+      },
+      {
+        "time": 7.125,
+        "state": "small"
+      }
+    ],
+    "frog-003": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      }
+    ],
+    "lesson-001": [
+      {
+        "time": 0.0,
+        "state": "closed"
+      },
+      {
+        "time": 0.125,
+        "state": "small"
+      },
+      {
+        "time": 0.25,
+        "state": "medium"
+      },
+      {
+        "time": 0.375,
+        "state": "wide"
+      },
+      {
+        "time": 0.5,
+        "state": "closed"
+      },
+      {
+        "time": 0.625,
+        "state": "small"
+      },
+      {
+        "time": 0.75,
+        "state": "medium"
+      },
+      {
+        "time": 0.875,
+        "state": "wide"
+      },
+      {
+        "time": 1.0,
+        "state": "closed"
+      },
+      {
+        "time": 1.125,
+        "state": "small"
+      },
+      {
+        "time": 1.25,
+        "state": "medium"
+      },
+      {
+        "time": 1.375,
+        "state": "wide"
+      },
+      {
+        "time": 1.5,
+        "state": "closed"
+      },
+      {
+        "time": 1.625,
+        "state": "small"
+      },
+      {
+        "time": 1.75,
+        "state": "medium"
+      },
+      {
+        "time": 1.875,
+        "state": "wide"
+      },
+      {
+        "time": 2.0,
+        "state": "closed"
+      },
+      {
+        "time": 2.125,
+        "state": "small"
+      },
+      {
+        "time": 2.25,
+        "state": "medium"
+      },
+      {
+        "time": 2.375,
+        "state": "wide"
+      },
+      {
+        "time": 2.5,
+        "state": "closed"
+      },
+      {
+        "time": 2.625,
+        "state": "small"
+      },
+      {
+        "time": 2.75,
+        "state": "medium"
+      },
+      {
+        "time": 2.875,
+        "state": "wide"
+      },
+      {
+        "time": 3.0,
+        "state": "closed"
+      },
+      {
+        "time": 3.125,
+        "state": "small"
+      },
+      {
+        "time": 3.25,
+        "state": "medium"
+      },
+      {
+        "time": 3.375,
+        "state": "wide"
+      },
+      {
+        "time": 3.5,
+        "state": "closed"
+      },
+      {
+        "time": 3.625,
+        "state": "small"
+      },
+      {
+        "time": 3.75,
+        "state": "medium"
+      },
+      {
+        "time": 3.875,
+        "state": "wide"
+      }
+    ]
+  }
+}
