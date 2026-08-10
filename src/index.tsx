@@ -1,0 +1,2 @@
+import React from 'react';import {Composition,registerRoot} from 'remotion';import timeline from '../episodes/001-ech-ngoi-day-gieng/timeline.json';import {Fable} from './Composition';import {secondsToFrames} from './engine/time';
+const Root=()=> <Composition id="Fable" component={Fable} width={timeline.episode.width} height={timeline.episode.height} fps={timeline.episode.fps} durationInFrames={secondsToFrames(timeline.duration,timeline.episode.fps)} defaultProps={{timeline,episodeDir:'episodes/001-ech-ngoi-day-gieng'}}/>;registerRoot(Root);

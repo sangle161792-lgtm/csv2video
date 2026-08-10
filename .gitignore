@@ -1,10 +1,10 @@
-# Git ignore
+node_modules/
+.remotion/
+output/*.mp4
+output/*.webm
+episodes/*/audio/*.mp3
+episodes/*/audio/*.wav
+episodes/*/generated/*.tmp
+.env
+*.log
 __pycache__/
-*.pyc
-*.pyo
-.git/
-.idea/
-.vscode/
-output/
-assets/cache/
-config.json
