@@ -1,0 +1,1 @@
+export const heuristicLipSync=(duration:number)=>Array.from({length:Math.ceil(duration*8)+1},(_,i)=>({time:i/8,state:(i%4===0?'closed':i%3===0?'wide':i%2===0?'medium':'small') as 'closed'|'small'|'medium'|'wide'}));
